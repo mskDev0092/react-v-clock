@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import './style.css';
 
 const initialState = {
-  count: 0,
+  count: 25,
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -37,10 +37,33 @@ export default function App() {
 
   return (
     <div>
-      <h1>Hello StackBlitz! {state.count}</h1>
-      <p>Start editing to see some magic happen :)</p>
-      <button onClick={handleAdd}>+</button>
-      <button onClick={handleSub}>-</button>
+      <h1>25 + 5 Clock</h1>
+
+      <div id="break-label"> Break Length </div>
+      <div id="break-length"> 5 </div>
+      <button id="break-increment" onClick={handleAdd}>
+        +
+      </button>
+      <button id="break-decrement" onClick={handleSub}>
+        -
+      </button>
+
+      <div id="session-label"> Session Length </div>
+      <div id="session-length"> {state.count} </div>
+      <button id="session-increment" onClick={handleAdd}>
+        +
+      </button>
+      <button id="session-decrement" onClick={handleSub}>
+        -
+      </button>
+
+      <div id="timer-label">Session</div>
+      <div id="time-left">{state.count} : 00</div>
+
+      <button id="start_stop">Play </button>
+      <button id="reset">Reset </button>
+
+      <audio id="beep"> </audio>
     </div>
   );
 }
