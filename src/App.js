@@ -38,31 +38,45 @@ export default function App() {
   return (
     <div>
       <h1>25 + 5 Clock</h1>
+      <div className="menue">
+        
+        <div id="break-label">
+          <h1>Break Length</h1>
 
-      <div id="break-label"> Break Length </div>
-      <div id="break-length"> 5 </div>
-      <button id="break-increment" onClick={handleAdd}>
-        +
-      </button>
-      <button id="break-decrement" onClick={handleSub}>
-        -
-      </button>
+          <div id="break-length"> 5 </div>
+          <button id="break-increment" className="add" onClick={handleAdd}>
+            +
+          </button>
+          <button id="break-decrement" className="remove" onClick={handleSub}>
+            -
+          </button>
+        </div>
 
-      <div id="session-label"> Session Length </div>
-      <div id="session-length"> {state.count} </div>
-      <button id="session-increment" onClick={handleAdd}>
-        +
-      </button>
-      <button id="session-decrement" onClick={handleSub}>
-        -
-      </button>
+        <div id="session-label">
+          <h1>Session Length</h1>
 
-      <div id="timer-label">Session</div>
-      <div id="time-left">{state.count} : 00</div>
+          <div id="session-length"> {state.count} </div>
+          <button id="session-increment" className="add" onClick={handleAdd}>
+            +
+          </button>
+          <button id="session-decrement" className="remove" onClick={handleSub}>
+            -
+          </button>
+        </div>
+      </div>
 
-      <button id="start_stop">Play </button>
-      <button id="reset">Reset </button>
-
+      <div id="time-left">
+        <div className="timeCount">
+          <div id="timer-label">
+            <h1>Session</h1>
+          </div>
+          <h2>{state.count}</h2> <h3> 00 </h3>
+        </div>
+      </div>
+      <div className="btn">
+        <button id="start_stop">Play </button>
+        <button id="reset">Reset </button>
+      </div>
       <audio id="beep"> </audio>
     </div>
   );
