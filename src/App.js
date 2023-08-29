@@ -1,4 +1,5 @@
 import React, { useReducer, useState } from 'react';
+import Countdown from 'react-countdown';
 import './style.css';
 
 const initialState = {
@@ -55,7 +56,7 @@ const reducer = (state, action) => {
   }
 };
 
-export default function App() {
+export default function App(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleAdd = () => {
@@ -70,6 +71,21 @@ export default function App() {
   const handleBreakSub = () => {
     dispatch({ type: 'BSUB' });
   };
+  const startCount = () => {};
+  const Completionist = () => {
+    let x = handleSub();
+    return x;
+  };
+  const renderer = ({ minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      return <Completionist />;
+    } else {
+      // Render a countdown
+      return <p>{seconds}</p>;
+    }
+  };
+
   return (
     <div className="master">
       <h1>25 + 5 Clock</h1>
@@ -112,14 +128,17 @@ export default function App() {
           <h1>Session</h1>
         </div>
         <div className="timeCount">
-          <p>{state.scount} </p> <p> {state.seconds}</p>
+          <p>{state.scount} </p>
+
+          <Countdown date={Date.now() + 5000} renderer={renderer} />
         </div>
       </div>
       <div className="btn">
-        <button id="start_stop">Play</button>
+        <button id="start_stop" onClick={startCount}>
+          Play
+        </button>
         <button id="reset">Reset </button>
       </div>
-      <audio id="beep"> </audio>
     </div>
   );
 }
