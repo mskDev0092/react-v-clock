@@ -1,10 +1,11 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import './style.css';
 
 const initialState = {
   scount: 25,
   bcount: 5,
   maxLimit: 60,
+  seconds: '00',
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -46,8 +47,11 @@ const reducer = (state, action) => {
         return state;
       }
 
+    case 'COUNTDOWN':
+    // decrement session count
+
     default:
-      return state;
+      throw new Error();
   }
 };
 
@@ -67,13 +71,15 @@ export default function App() {
     dispatch({ type: 'BSUB' });
   };
   return (
-    <div>
+    <div className="master">
       <h1>25 + 5 Clock</h1>
       <div className="menue">
         <div id="break-label">
           <h1>Break Length</h1>
 
-          <div id="break-length"> {state.bcount} </div>
+          <div id="break-length">
+            <p>{state.bcount}</p>
+          </div>
           <button id="break-increment" className="add" onClick={handleBreakAdd}>
             +
           </button>
@@ -89,7 +95,9 @@ export default function App() {
         <div id="session-label">
           <h1>Session Length</h1>
 
-          <div id="session-length"> {state.scount} </div>
+          <div id="session-length">
+            <p>{state.scount}</p>
+          </div>
           <button id="session-increment" className="add" onClick={handleAdd}>
             +
           </button>
@@ -100,15 +108,15 @@ export default function App() {
       </div>
 
       <div id="time-left">
+        <div id="timer-label">
+          <h1>Session</h1>
+        </div>
         <div className="timeCount">
-          <div id="timer-label">
-            <h1>Session</h1>
-          </div>
-          <h2>{state.scount}</h2> <h3> 00 </h3>
+          <p>{state.scount} </p> <p> {state.seconds}</p>
         </div>
       </div>
       <div className="btn">
-        <button id="start_stop">Play </button>
+        <button id="start_stop">Play</button>
         <button id="reset">Reset </button>
       </div>
       <audio id="beep"> </audio>

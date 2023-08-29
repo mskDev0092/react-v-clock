@@ -4,28 +4,60 @@ p {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 body {
-  background-color: antiquewhite;
+  background: #2b2f77;
+  background: -webkit-linear-gradient(
+    0deg,
+    #2b2f77 0%,
+    #141852 50%,
+    #070b34 100%
+  );
+  background: linear-gradient(0deg, #2b2f77 0%, #141852 50%, #070b34 100%);
+
+  background: conic-gradient(
+        from -45deg,
+        #373743 90deg,
+        #0000 0 180deg,
+        #65657b 0 270deg,
+        #0000 0
+      )
+      0 calc(32px / 2) / 32px 32px,
+    conic-gradient(from 135deg at 50% 0, #373743 90deg, #65657b 0) 0 0 /
+      calc(2 * 32px) 32px;
 }
 .master h1 {
   text-align: center;
-  border: 2px solid #080808;
 }
+.master h1,
+.timeCount,
+#break-label,
+#session-label {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border-radius: 10px;
+}
+
 #break-label {
   color: black;
   margin: 20px;
-  border: 2px solid #080808;
 }
 #session-label {
   color: black;
   margin: 20px;
-  border: 2px solid #080808;
 }
 .master {
   display: flex;
-  flex-direction: column;
-  border: 2px solid #080808;
+  flex-direction: row;
+
   justify-content: center;
   align-items: center;
+
+  background: rgba(18, 18, 18, 0.6);
+  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(7.6px);
+  -webkit-backdrop-filter: blur(7.6px);
+  border-radius: 10px;
 }
 .menue {
   display: flex;
@@ -34,7 +66,6 @@ body {
   align-items: center;
   padding: 5px;
   margin: 10px;
-  border: 2px solid black;
 }
 .timeCount {
   display: flex;
@@ -46,11 +77,12 @@ body {
   margin: 10px;
 }
 
-.timeCount h2,
-h3 {
+.timeCount p,
+#break-length p,
+#session-length p {
   background-color: #080808;
   border-radius: 10%;
-  padding: 10px 20px;
+  padding: 20px;
   color: #fff;
   font-size: 60px;
   font-weight: bold;
