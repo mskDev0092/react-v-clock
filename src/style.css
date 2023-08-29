@@ -24,9 +24,12 @@ body {
     conic-gradient(from 135deg at 50% 0, #373743 90deg, #65657b 0) 0 0 /
       calc(2 * 32px) 32px;
 }
-.master h1 {
+.master > h1:first-child {
   text-align: center;
+  color: white;
+  width: 460px;
 }
+
 .master h1,
 .timeCount,
 #break-label,
@@ -39,16 +42,34 @@ body {
 }
 
 #break-label {
-  color: black;
-  margin: 20px;
+  color: white;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 450px;
+  font-size: small;
+  text-align: center;
 }
 #session-label {
-  color: black;
-  margin: 20px;
+  text-align: center;
+  color: white;
+  font-size: small;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 450px;
 }
 .master {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
   justify-content: center;
   align-items: center;
@@ -70,7 +91,7 @@ body {
 .timeCount {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   border: 2px solid rgb(41, 41, 39);
   padding: 5px;
@@ -82,13 +103,13 @@ body {
 #session-length p {
   background-color: #080808;
   border-radius: 10%;
-  padding: 20px;
+  padding: 10px;
   color: #fff;
-  font-size: 60px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-  width: 90px;
-  height: 120px;
+  width: 50px;
+  height: 60px;
 
   /* Add a shadow */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -124,4 +145,22 @@ button:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+#timer-label > h1 {
+  width: 460px;
+  text-align: center;
+}
+
+@media only screen and (min-width: 960px) {
+  .master {
+    flex-direction: row;
+  }
+  .timeCount p,
+  #break-length p,
+  #session-length p {
+    width: 90px;
+    height: 120px;
+    font-size: 60px;
+  }
 }
