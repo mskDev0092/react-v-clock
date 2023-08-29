@@ -4,6 +4,7 @@ import './style.css';
 const initialState = {
   scount: 25,
   bcount: 5,
+  maxLimit: 60,
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -17,12 +18,16 @@ const reducer = (state, action) => {
         return state;
       }
     case 'ADD':
-      return {
-        ...state,
-        scount: state.scount + 1,
-      };
+      if (state.scount < state.maxLimit) {
+        return {
+          ...state,
+          scount: state.scount + 1,
+        };
+      } else {
+        return state;
+      }
     case 'BSUB':
-      if (state.bcount > 0) {
+      if (state.bcount > 1) {
         return {
           ...state,
           bcount: state.bcount - 1,
@@ -32,10 +37,14 @@ const reducer = (state, action) => {
       }
 
     case 'BAD':
-      return {
-        ...state,
-        bcount: state.bcount + 1,
-      };
+      if (state.bcount < state.maxLimit) {
+        return {
+          ...state,
+          bcount: state.bcount + 1,
+        };
+      } else {
+        return state;
+      }
 
     default:
       return state;
