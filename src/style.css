@@ -6,8 +6,9 @@ p {
 body {
   background-color: antiquewhite;
 }
-body h1 {
+.master h1 {
   text-align: center;
+  border: 2px solid #080808;
 }
 #break-label {
   color: black;
@@ -19,7 +20,13 @@ body h1 {
   margin: 20px;
   border: 2px solid #080808;
 }
-
+.master {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #080808;
+  justify-content: center;
+  align-items: center;
+}
 .menue {
   display: flex;
   flex-direction: row;

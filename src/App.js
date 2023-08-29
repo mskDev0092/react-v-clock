@@ -2,15 +2,16 @@ import React, { useReducer } from 'react';
 import './style.css';
 
 const initialState = {
-  count: 25,
+  scount: 25,
+  bcount: 5,
 };
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SUB':
-      if (state.count > 0) {
+      if (state.scount > 1) {
         return {
           ...state,
-          count: state.count - 1,
+          scount: state.scount - 1,
         };
       } else {
         return state;
@@ -18,8 +19,24 @@ const reducer = (state, action) => {
     case 'ADD':
       return {
         ...state,
-        count: state.count + 1,
+        scount: state.scount + 1,
       };
+    case 'BSUB':
+      if (state.bcount > 0) {
+        return {
+          ...state,
+          bcount: state.bcount - 1,
+        };
+      } else {
+        return state;
+      }
+
+    case 'BAD':
+      return {
+        ...state,
+        bcount: state.bcount + 1,
+      };
+
     default:
       return state;
   }
@@ -34,20 +51,28 @@ export default function App() {
   const handleSub = () => {
     dispatch({ type: 'SUB' });
   };
-
+  const handleBreakAdd = () => {
+    dispatch({ type: 'BAD' });
+  };
+  const handleBreakSub = () => {
+    dispatch({ type: 'BSUB' });
+  };
   return (
     <div>
       <h1>25 + 5 Clock</h1>
       <div className="menue">
-        
         <div id="break-label">
           <h1>Break Length</h1>
 
-          <div id="break-length"> 5 </div>
-          <button id="break-increment" className="add" onClick={handleAdd}>
+          <div id="break-length"> {state.bcount} </div>
+          <button id="break-increment" className="add" onClick={handleBreakAdd}>
             +
           </button>
-          <button id="break-decrement" className="remove" onClick={handleSub}>
+          <button
+            id="break-decrement"
+            className="remove"
+            onClick={handleBreakSub}
+          >
             -
           </button>
         </div>
@@ -55,7 +80,7 @@ export default function App() {
         <div id="session-label">
           <h1>Session Length</h1>
 
-          <div id="session-length"> {state.count} </div>
+          <div id="session-length"> {state.scount} </div>
           <button id="session-increment" className="add" onClick={handleAdd}>
             +
           </button>
@@ -70,7 +95,7 @@ export default function App() {
           <div id="timer-label">
             <h1>Session</h1>
           </div>
-          <h2>{state.count}</h2> <h3> 00 </h3>
+          <h2>{state.scount}</h2> <h3> 00 </h3>
         </div>
       </div>
       <div className="btn">
