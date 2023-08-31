@@ -1,48 +1,46 @@
-import React, { useReducer, useState } from 'react';
-import Countdown from 'react-countdown';
+import React, { useReducer, useState, useEffect } from 'react';
+
 import './style.css';
 
 const initialState = {
-  scount: 25,
-  bcount: 5,
-  maxLimit: 60,
-  seconds: '00',
+  session: 25,
+  break: 5,
 };
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SUB':
-      if (state.scount > 1) {
+      if (state.session > 1) {
         return {
           ...state,
-          scount: state.scount - 1,
+          session: state.session - 1,
         };
       } else {
         return state;
       }
     case 'ADD':
-      if (state.scount < state.maxLimit) {
+      if (state.session < 60) {
         return {
           ...state,
-          scount: state.scount + 1,
+          session: state.session + 1,
         };
       } else {
         return state;
       }
     case 'BSUB':
-      if (state.bcount > 1) {
+      if (state.break > 1) {
         return {
           ...state,
-          bcount: state.bcount - 1,
+          break: state.break - 1,
         };
       } else {
         return state;
       }
 
     case 'BAD':
-      if (state.bcount < state.maxLimit) {
+      if (state.break < 60) {
         return {
           ...state,
-          bcount: state.bcount + 1,
+          break: state.break + 1,
         };
       } else {
         return state;
@@ -58,6 +56,20 @@ const reducer = (state, action) => {
 
 export default function App(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [minutes, setMinutes] = useState(state.session);
+  const [seconds, setSeconds] = useState(60);
+  const [countStart, setCountStart] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds(seconds - 1);
+      if (seconds === 0) {
+        setSeconds(59);
+        setMinutes(minutes - 1);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [seconds, minutes]);
 
   const handleAdd = () => {
     dispatch({ type: 'ADD' });
@@ -71,30 +83,37 @@ export default function App(props) {
   const handleBreakSub = () => {
     dispatch({ type: 'BSUB' });
   };
-  const startCount = () => {};
-  const Completionist = () => {
-    let x = handleSub();
-    return x;
-  };
-  const renderer = ({ minutes, seconds, completed }) => {
-    if (completed) {
-      // Render a completed state
-      return <Completionist />;
-    } else {
-      // Render a countdown
-      return <p>{seconds}</p>;
+  const startCount = () => {
+    setCountStart(!countStart);
+    if (countStart) {
+      setSeconds(60);
+      setMinutes(0);
     }
   };
 
   return (
     <div className="master">
       <h1>25 + 5 Clock</h1>
+      <div id="time-left">
+        <div id="timer-label">
+          <h1>Session</h1>
+        </div>
+        <div className="timeCount">
+          <p>{minutes} </p> <p>{seconds} </p>
+        </div>
+      </div>
+      <div className="btn">
+        <button id="start_stop" onClick={startCount}>
+          {countStart ? 'Stop' : 'Start'}
+        </button>
+        <button id="reset">Reset </button>
+      </div>
       <div className="menue">
         <div id="break-label">
           <h1>Break Length</h1>
 
           <div id="break-length">
-            <p>{state.bcount}</p>
+            <p>{state.break}</p>
           </div>
           <button id="break-increment" className="add" onClick={handleBreakAdd}>
             +
@@ -112,7 +131,7 @@ export default function App(props) {
           <h1>Session Length</h1>
 
           <div id="session-length">
-            <p>{state.scount}</p>
+            <p>{state.session}</p>
           </div>
           <button id="session-increment" className="add" onClick={handleAdd}>
             +
@@ -121,23 +140,6 @@ export default function App(props) {
             -
           </button>
         </div>
-      </div>
-
-      <div id="time-left">
-        <div id="timer-label">
-          <h1>Session</h1>
-        </div>
-        <div className="timeCount">
-          <p>{state.scount} </p>
-
-          <Countdown date={Date.now() + 5000} renderer={renderer} />
-        </div>
-      </div>
-      <div className="btn">
-        <button id="start_stop" onClick={startCount}>
-          Play
-        </button>
-        <button id="reset">Reset </button>
       </div>
     </div>
   );
