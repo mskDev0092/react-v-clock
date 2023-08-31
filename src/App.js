@@ -54,22 +54,18 @@ const reducer = (state, action) => {
   }
 };
 
-export default function App(props) {
+export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [minutes, setMinutes] = useState(state.session);
   const [seconds, setSeconds] = useState(60);
-  const [countStart, setCountStart] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSeconds(seconds - 1);
-      if (seconds === 0) {
-        setSeconds(59);
-        setMinutes(minutes - 1);
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [seconds, minutes]);
+  const [isStarted, setIsStarted] = useState(false, {
+    effect:
+      (() => {
+        setSeconds(seconds - 1);
+      },
+      [seconds]),
+  });
+  const [isPaused, setIsPaused] = useState(false);
 
   const handleAdd = () => {
     dispatch({ type: 'ADD' });
@@ -83,12 +79,9 @@ export default function App(props) {
   const handleBreakSub = () => {
     dispatch({ type: 'BSUB' });
   };
+
   const startCount = () => {
-    setCountStart(!countStart);
-    if (countStart) {
-      setSeconds(60);
-      setMinutes(0);
-    }
+    setIsStarted(true);
   };
 
   return (
@@ -104,7 +97,7 @@ export default function App(props) {
       </div>
       <div className="btn">
         <button id="start_stop" onClick={startCount}>
-          {countStart ? 'Stop' : 'Start'}
+          {!isStarted ? 'Start' : 'Pause'}
         </button>
         <button id="reset">Reset </button>
       </div>
