@@ -4,82 +4,58 @@ p {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 body {
-  background: #2b2f77;
-  background: -webkit-linear-gradient(
-    0deg,
-    #2b2f77 0%,
-    #141852 50%,
-    #070b34 100%
-  );
-  background: linear-gradient(0deg, #2b2f77 0%, #141852 50%, #070b34 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  background: conic-gradient(
-        from -45deg,
-        #373743 90deg,
-        #0000 0 180deg,
-        #65657b 0 270deg,
-        #0000 0
-      )
-      0 calc(32px / 2) / 32px 32px,
-    conic-gradient(from 135deg at 50% 0, #373743 90deg, #65657b 0) 0 0 /
-      calc(2 * 32px) 32px;
+  background: linear-gradient(0deg, #6eb1b6 0%, #143e52 50%, #072b34 100%);
 }
 .master > h1:first-child {
   text-align: center;
-  color: white;
-  width: 460px;
+  color: rgba(103, 187, 202, 0.7);
+  width: auto;
+}
+.master {
+  border: 1px solid rgb(73, 221, 226);
+  box-shadow: 0 0 5px 5px rgba(103, 187, 202, 0.7);
+  max-width: 400px;
+  margin: 20px;
 }
 
-.master h1,
 .timeCount,
 #break-label,
 #session-label {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(200, 245, 245, 0.15);
   box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  border-radius: 10px;
 }
 
 #break-label {
-  color: white;
-  margin: 10px;
-  padding: 10px;
+  color: rgba(103, 187, 202, 0.7);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 200px;
-  height: 450px;
-  font-size: small;
+  width: auto;
+  height: 250px;
+  font-size: 12px;
   text-align: center;
 }
 #session-label {
   text-align: center;
-  color: white;
-  font-size: small;
+  color: rgba(103, 187, 202, 0.7);
+  font-size: 12px;
   margin: 10px;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 200px;
-  height: 450px;
+  width: auto;
+  height: 250px;
 }
-.master {
-  display: flex;
-  flex-direction: column;
 
-  justify-content: center;
-  align-items: center;
-
-  background: rgba(18, 18, 18, 0.6);
-  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(7.6px);
-  -webkit-backdrop-filter: blur(7.6px);
-  border-radius: 10px;
-}
 .menue {
   display: flex;
   flex-direction: row;
@@ -91,17 +67,15 @@ body {
 .timeCount {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   border: 2px solid rgb(41, 41, 39);
-  padding: 5px;
-  margin: 10px;
 }
 
 .timeCount p,
 #break-length p,
 #session-length p {
-  background-color: #080808;
+  background-color: rgba(103, 187, 202, 0.7);
   border-radius: 10%;
   padding: 10px;
   color: #fff;
@@ -109,16 +83,14 @@ body {
   font-weight: bold;
   cursor: pointer;
   width: 50px;
-  height: 60px;
+  height: 40px;
+  margin: 10px;
 
   /* Add a shadow */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
-  /* Add a gradient */
-  background: linear-gradient(to bottom, #777474, #080808);
+  box-shadow: 0 2px 4px rgba(115, 213, 238, 0.2);
 }
 button {
-  background-color: #333;
+  background-color: rgba(103, 187, 202, 0.7);
   color: #fff;
 
   border-radius: 4px;
@@ -142,14 +114,19 @@ button:hover {
 }
 .btn {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin: 10px;
+}
+.bt2 {
+  margin: 10px;
 }
 
 #timer-label > h1 {
-  width: 460px;
+  width: auto;
   text-align: center;
+  color: rgba(103, 187, 202, 0.7);
 }
 
 @media only screen and (min-width: 960px) {

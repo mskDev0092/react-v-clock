@@ -3,51 +3,60 @@ import React, { useReducer, useState, useEffect } from 'react';
 import './style.css';
 
 const initialState = {
-  session: 25,
-  break: 5,
+  sessionLength: 25,
+  breakLength: 5,
+  seconds: 60,
 };
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'SUB':
-      if (state.session > 1) {
+    case 'Session--':
+      if (state.sessionLength > 1) {
         return {
           ...state,
-          session: state.session - 1,
+          sessionLength: state.sessionLength - 1,
         };
       } else {
         return state;
       }
-    case 'ADD':
-      if (state.session < 60) {
+    case 'Session++':
+      if (state.sessionLength < 60) {
         return {
           ...state,
-          session: state.session + 1,
+          sessionLength: state.sessionLength + 1,
         };
       } else {
         return state;
       }
-    case 'BSUB':
-      if (state.break > 1) {
+    case 'Break--':
+      if (state.breakLength > 1) {
         return {
           ...state,
-          break: state.break - 1,
-        };
-      } else {
-        return state;
-      }
-
-    case 'BAD':
-      if (state.break < 60) {
-        return {
-          ...state,
-          break: state.break + 1,
+          breakLength: state.breakLength - 1,
         };
       } else {
         return state;
       }
 
-    case 'COUNTDOWN':
-    // decrement session count
+    case 'Break++':
+      if (state.breakLength < 60) {
+        return {
+          ...state,
+          breakLength: state.breakLength + 1,
+        };
+      } else {
+        return state;
+      }
+
+    case 'Start-Count':
+    // decrement seconds from 60 - 0
+    // decrement 1 minute if seconds reach zero
+    // decrement sessionLength count till 0
+    case 'Add-delay':
+    // Delay count when start count ends based on set break length
+    // Restart session based on previous state
+
+    case 'Reset':
+    // Reset the app to default values
 
     default:
       throw new Error();
@@ -56,32 +65,21 @@ const reducer = (state, action) => {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [minutes, setMinutes] = useState(state.session);
-  const [seconds, setSeconds] = useState(60);
-  const [isStarted, setIsStarted] = useState(false, {
-    effect:
-      (() => {
-        setSeconds(seconds - 1);
-      },
-      [seconds]),
-  });
-  const [isPaused, setIsPaused] = useState(false);
+  const [minutes, setMinutes] = useState(state.sessionLength);
+  const [seconds, setSeconds] = useState(state.seconds);
+  const [isRunning, setIsRunning] = useState(false);
 
-  const handleAdd = () => {
-    dispatch({ type: 'ADD' });
+  const handleSessionAdd = () => {
+    dispatch({ type: 'Session++' });
   };
-  const handleSub = () => {
-    dispatch({ type: 'SUB' });
+  const handleSessionSub = () => {
+    dispatch({ type: 'Session--' });
   };
-  const handleBreakAdd = () => {
-    dispatch({ type: 'BAD' });
+  const handlebreakAdd = () => {
+    dispatch({ type: 'Break++' });
   };
-  const handleBreakSub = () => {
-    dispatch({ type: 'BSUB' });
-  };
-
-  const startCount = () => {
-    setIsStarted(true);
+  const handlebreakSub = () => {
+    dispatch({ type: 'Break--' });
   };
 
   return (
@@ -89,15 +87,15 @@ export default function App() {
       <h1>25 + 5 Clock</h1>
       <div id="time-left">
         <div id="timer-label">
-          <h1>Session</h1>
+          <h1>Time Left</h1>
         </div>
         <div className="timeCount">
-          <p>{minutes} </p> <p>{seconds} </p>
+          <p>{minutes} </p> <p>{seconds}</p>
         </div>
       </div>
       <div className="btn">
-        <button id="start_stop" onClick={startCount}>
-          {!isStarted ? 'Start' : 'Pause'}
+        <button id="start_stop" onClick={() => setIsRunning(!isRunning)}>
+          {!isRunning ? 'Start' : 'Pause'}
         </button>
         <button id="reset">Reset </button>
       </div>
@@ -106,32 +104,48 @@ export default function App() {
           <h1>Break Length</h1>
 
           <div id="break-length">
-            <p>{state.break}</p>
+            <p>{state.breakLength}</p>
           </div>
-          <button id="break-increment" className="add" onClick={handleBreakAdd}>
-            +
-          </button>
-          <button
-            id="break-decrement"
-            className="remove"
-            onClick={handleBreakSub}
-          >
-            -
-          </button>
+          <div className="btn2">
+            <button
+              id="break-increment"
+              className="add"
+              onClick={handlebreakAdd}
+            >
+              +
+            </button>
+            <button
+              id="break-decrement"
+              className="remove"
+              onClick={handlebreakSub}
+            >
+              -
+            </button>
+          </div>
         </div>
 
         <div id="session-label">
           <h1>Session Length</h1>
 
           <div id="session-length">
-            <p>{state.session}</p>
+            <p>{state.sessionLength}</p>
           </div>
-          <button id="session-increment" className="add" onClick={handleAdd}>
-            +
-          </button>
-          <button id="session-decrement" className="remove" onClick={handleSub}>
-            -
-          </button>
+          <div className="btn2">
+            <button
+              id="session-increment"
+              className="add"
+              onClick={handleSessionAdd}
+            >
+              +
+            </button>
+            <button
+              id="session-decrement"
+              className="remove"
+              onClick={handleSessionSub}
+            >
+              -
+            </button>
+          </div>
         </div>
       </div>
     </div>
