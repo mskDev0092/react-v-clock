@@ -100,10 +100,10 @@ button {
   cursor: pointer;
   border: 1px solid #ccc;
   /* Add a shadow */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(41, 82, 83, 0.2);
 }
 button:hover {
-  background-color: #444;
+  background-color: rgba(41, 77, 83, 0.7);
 }
 .add {
   color: rgb(7, 250, 100);

@@ -6,7 +6,6 @@
   "private": true,
   "dependencies": {
     "react": "18.2.0",
-    "react-countdown": "^2.3.5",
     "react-dom": "18.2.0"
   },
   "scripts": {

@@ -1,12 +1,16 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React, { useReducer, useState } from 'react';
 
 import './style.css';
 
 const initialState = {
   sessionLength: 25,
   breakLength: 5,
-  seconds: 60,
+  countSeconds: 60,
+  minutes: 25,
+  seconds: 0,
+  status: initialState,
 };
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'Session--':
@@ -47,16 +51,14 @@ const reducer = (state, action) => {
         return state;
       }
 
-    case 'Start-Count':
-    // decrement seconds from 60 - 0
-    // decrement 1 minute if seconds reach zero
-    // decrement sessionLength count till 0
+    case 'Start-Count': {
+    }
+
     case 'Add-delay':
-    // Delay count when start count ends based on set break length
-    // Restart session based on previous state
+    // Pause the countdown.
 
     case 'Reset':
-    // Reset the app to default values
+    // Stop the countdown and reset the timer.
 
     default:
       throw new Error();
@@ -65,8 +67,7 @@ const reducer = (state, action) => {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [minutes, setMinutes] = useState(state.sessionLength);
-  const [seconds, setSeconds] = useState(state.seconds);
+
   const [isRunning, setIsRunning] = useState(false);
 
   const handleSessionAdd = () => {
@@ -81,6 +82,12 @@ export default function App() {
   const handlebreakSub = () => {
     dispatch({ type: 'Break--' });
   };
+  const handleReset = () => {
+    dispatch({ type: 'Reset' });
+  };
+  const handleStart = () => {
+    dispatch({ type: 'Start-Count' });
+  };
 
   return (
     <div className="master">
@@ -90,14 +97,16 @@ export default function App() {
           <h1>Time Left</h1>
         </div>
         <div className="timeCount">
-          <p>{minutes} </p> <p>{seconds}</p>
+          <p>{state.sessionLength} </p> <p>{state.countSeconds}</p>
         </div>
       </div>
       <div className="btn">
-        <button id="start_stop" onClick={() => setIsRunning(!isRunning)}>
+        <button id="start_stop" onClick={handleStart}>
           {!isRunning ? 'Start' : 'Pause'}
         </button>
-        <button id="reset">Reset </button>
+        <button id="reset" onClick={handleReset}>
+          Reset
+        </button>
       </div>
       <div className="menue">
         <div id="break-label">
