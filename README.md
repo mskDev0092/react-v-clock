@@ -4,11 +4,11 @@ Completed this project by freeCodeCamp using React JS.
 
 ## Learned
 
-Practiced react useReducer to make react V-Clock.
+Practiced react useReducer useEffect and useState to develop react V-Clock.
 
 ## Screenshots
 
-![App Screenshot](https://github.com/mskDev0092/example.png)
+![App Screenshot](https://github.com/mskDev0092/react-v-clock/blob/main/Screenshot%202023-09-04%20at%2020-38-19%20React%20a%2025%205%20Clock.png)
 
 ## Features
 
