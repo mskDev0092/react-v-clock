@@ -14,7 +14,7 @@ Practiced react useReducer useEffect and useState to develop react V-Clock.
 
 ## 🔗 Links
 
-[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://github.com/mskDev0092/markdown-project-fcc)
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://github.com/mskDev0092)
 
 # markdown-project-fcc
 
