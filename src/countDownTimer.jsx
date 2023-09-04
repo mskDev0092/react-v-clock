@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 
 import './style.css';
 
@@ -6,8 +6,6 @@ const initialState = {
   sessionLength: 25,
   breakLength: 5,
   countSeconds: 60,
-  minutes: 25,
-  seconds: 0,
 };
 
 const reducer = (state, action) => {
@@ -50,14 +48,14 @@ const reducer = (state, action) => {
         return state;
       }
 
-    case 'Start-Count': {
-    }
+    case 'Start-Count':
 
     case 'Add-delay':
     // Pause the countdown.
 
     case 'Reset':
-    // Stop the countdown and reset the timer.
+      // Stop the countdown and reset the timer.
+      return initialState;
 
     default:
       throw new Error();
@@ -68,6 +66,19 @@ export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const [isRunning, setIsRunning] = useState(false);
+  const [secondsRemaining, setSecondsRemaining] = useState(60);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (secondsRemaining > 0) {
+        setSecondsRemaining(secondsRemaining - 1);
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [secondsRemaining]);
 
   const handleSessionAdd = () => {
     dispatch({ type: 'Session++' });
@@ -85,7 +96,7 @@ export default function App() {
     dispatch({ type: 'Reset' });
   };
   const handleStart = () => {
-    dispatch({ type: 'Start-Count' });
+    setIsRunning(!isRunning);
   };
 
   return (
@@ -96,7 +107,7 @@ export default function App() {
           <h1>Time Left</h1>
         </div>
         <div className="timeCount">
-          <p>{state.sessionLength} </p> <p>{state.countSeconds}</p>
+          <p>{state.sessionLength} </p> <p>{secondsRemaining}</p>
         </div>
       </div>
       <div className="btn">
