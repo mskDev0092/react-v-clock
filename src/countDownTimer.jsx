@@ -3,7 +3,7 @@ import React, { useReducer, useState, useEffect } from 'react';
 import './style.css';
 
 const initialState = {
-  sessionLength: 11,
+  sessionLength: 2,
   breakLength: 5,
   countSeconds: 6,
 };
@@ -66,11 +66,10 @@ const reducer = (state = initialState, action) => {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const [delay, setDelay] = useState(state.breakLength);
   const [paused, setpaused] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState(state.countSeconds);
   const [minutes, setMinutes] = useState(state.sessionLength);
-  const [alarm, setAlarm] = useState();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -84,13 +83,19 @@ export default function App() {
       setMinutes(minutes - 1);
       setSecondsRemaining(6);
     }
-    if (minutes === 0) { 
+    if (minutes <= 0 && secondsRemaining === 0) {
       audio.play();
-      setMinutes(state.sessionLength);
+
+      setpaused(true);
+      setMinutes('00');
+      setSecondsRemaining('00');
     }
 
     return () => clearInterval(interval);
   }, [secondsRemaining, minutes]);
+
+  const audio = new Audio();
+  audio.src = 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3';
 
   const handleSessionAdd = () => {
     dispatch({ type: 'Session++' });
@@ -111,8 +116,7 @@ export default function App() {
     dispatch({ type: 'Start-Count' });
     setpaused(!paused);
   };
-  const audio = new Audio();
-  audio.src = 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3';
+
   return (
     <div className="master">
       <h1>25 + 5 Clock</h1>
