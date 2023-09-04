@@ -5,10 +5,10 @@ import './style.css';
 const initialState = {
   sessionLength: 25,
   breakLength: 5,
-  countSeconds: 60,
+  countSeconds: 6,
 };
 
-const reducer = (state, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'Session--':
       if (state.sessionLength > 1) {
@@ -49,9 +49,11 @@ const reducer = (state, action) => {
       }
 
     case 'Start-Count':
-
-    case 'Add-delay':
+      console.log('hi');
+    case 'Pause-Count':
     // Pause the countdown.
+    case 'Add-delay':
+    // Add break to the countdown.
 
     case 'Reset':
       // Stop the countdown and reset the timer.
@@ -66,16 +68,21 @@ export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const [isRunning, setIsRunning] = useState(false);
-  const [secondsRemaining, setSecondsRemaining] = useState(60);
+  const [secondsRemaining, setSecondsRemaining] = useState(state.countSeconds);
+  const [minutes, setMinutes] = useState(state.sessionLength);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (secondsRemaining > 0) {
+      if (secondsRemaining > 0 && secondsRemaining < 61 && !isRunning) {
         setSecondsRemaining(secondsRemaining - 1);
       } else {
         clearInterval(interval);
       }
     }, 1000);
+    if (secondsRemaining === 0 && isRunning) {
+      setMinutes(minutes - 1);
+      setSecondsRemaining(6);
+    }
 
     return () => clearInterval(interval);
   }, [secondsRemaining]);
@@ -96,6 +103,7 @@ export default function App() {
     dispatch({ type: 'Reset' });
   };
   const handleStart = () => {
+    dispatch({ type: 'Start-Count' });
     setIsRunning(!isRunning);
   };
 
@@ -107,7 +115,7 @@ export default function App() {
           <h1>Time Left</h1>
         </div>
         <div className="timeCount">
-          <p>{state.sessionLength} </p> <p>{secondsRemaining}</p>
+          <p>{minutes} </p> <p>{secondsRemaining}</p>
         </div>
       </div>
       <div className="btn">
