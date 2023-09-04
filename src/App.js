@@ -8,7 +8,6 @@ const initialState = {
   countSeconds: 60,
   minutes: 25,
   seconds: 0,
-  status: initialState,
 };
 
 const reducer = (state, action) => {
