@@ -3,7 +3,7 @@ import React, { useReducer, useState, useEffect } from 'react';
 import './style.css';
 
 const initialState = {
-  sessionLength: 25,
+  sessionLength: 11,
   breakLength: 5,
   countSeconds: 6,
 };
@@ -67,25 +67,30 @@ const reducer = (state = initialState, action) => {
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [isRunning, setIsRunning] = useState(false);
+  const [paused, setpaused] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState(state.countSeconds);
   const [minutes, setMinutes] = useState(state.sessionLength);
+  const [alarm, setAlarm] = useState();
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (secondsRemaining > 0 && secondsRemaining < 61 && !isRunning) {
+      if (secondsRemaining > 0 && secondsRemaining < 61 && !paused) {
         setSecondsRemaining(secondsRemaining - 1);
       } else {
         clearInterval(interval);
       }
     }, 1000);
-    if (secondsRemaining === 0 && isRunning) {
+    if (secondsRemaining === 0 && !paused) {
       setMinutes(minutes - 1);
       setSecondsRemaining(6);
     }
+    if (minutes === 0) { 
+      audio.play();
+      setMinutes(state.sessionLength);
+    }
 
     return () => clearInterval(interval);
-  }, [secondsRemaining]);
+  }, [secondsRemaining, minutes]);
 
   const handleSessionAdd = () => {
     dispatch({ type: 'Session++' });
@@ -104,9 +109,10 @@ export default function App() {
   };
   const handleStart = () => {
     dispatch({ type: 'Start-Count' });
-    setIsRunning(!isRunning);
+    setpaused(!paused);
   };
-
+  const audio = new Audio();
+  audio.src = 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3';
   return (
     <div className="master">
       <h1>25 + 5 Clock</h1>
@@ -120,7 +126,7 @@ export default function App() {
       </div>
       <div className="btn">
         <button id="start_stop" onClick={handleStart}>
-          {!isRunning ? 'Start' : 'Pause'}
+          {!paused ? 'Start' : 'Pause'}
         </button>
         <button id="reset" onClick={handleReset}>
           Reset
