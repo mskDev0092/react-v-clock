@@ -3,9 +3,9 @@ import React, { useReducer, useState, useEffect } from 'react';
 import './style.css';
 
 const initialState = {
-  sessionLength: 2,
+  sessionLength: 25,
   breakLength: 5,
-  countSeconds: 6,
+  countSeconds: 60,
 };
 
 const reducer = (state = initialState, action) => {
@@ -66,33 +66,6 @@ const reducer = (state = initialState, action) => {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [delay, setDelay] = useState(state.breakLength);
-  const [paused, setpaused] = useState(false);
-  const [secondsRemaining, setSecondsRemaining] = useState(state.countSeconds);
-  const [minutes, setMinutes] = useState(state.sessionLength);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (secondsRemaining > 0 && secondsRemaining < 61 && !paused) {
-        setSecondsRemaining(secondsRemaining - 1);
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000);
-    if (secondsRemaining === 0 && !paused) {
-      setMinutes(minutes - 1);
-      setSecondsRemaining(6);
-    }
-    if (minutes <= 0 && secondsRemaining === 0) {
-      audio.play();
-
-      setpaused(true);
-      setMinutes('00');
-      setSecondsRemaining('00');
-    }
-
-    return () => clearInterval(interval);
-  }, [secondsRemaining, minutes]);
 
   const audio = new Audio();
   audio.src = 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3';
@@ -114,7 +87,9 @@ export default function App() {
   };
   const handleStart = () => {
     dispatch({ type: 'Start-Count' });
-    setpaused(!paused);
+  };
+  const handlePause = () => {
+    dispatch({ type: 'Pause-Count' });
   };
 
   return (
@@ -125,12 +100,15 @@ export default function App() {
           <h1>Time Left</h1>
         </div>
         <div className="timeCount">
-          <p>{minutes} </p> <p>{secondsRemaining}</p>
+          <p>{state.sessionLength} </p> <p>{state.countSeconds}</p>
         </div>
       </div>
       <div className="btn">
-        <button id="start_stop" onClick={handleStart}>
-          {!paused ? 'Start' : 'Pause'}
+        <button id="start" onClick={handleStart}>
+          Start
+        </button>
+        <button id="stop" onClick={handlePause}>
+          Pause
         </button>
         <button id="reset" onClick={handleReset}>
           Reset
