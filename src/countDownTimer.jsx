@@ -3,9 +3,9 @@ import React, { useReducer, useEffect, useState } from 'react';
 import './style.css';
 
 const initialState = {
-  sessionLength: 25,
+  sessionLength: 2,
   breakLength: 5,
-  countSeconds: 60,
+  countSeconds: 6,
   isPlaying: false,
 };
 
@@ -74,15 +74,20 @@ const reducer = (state = initialState, action) => {
 export default function CountDownTimer() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [count, setCount] = useState(state.countSeconds);
+  const [minutes, setMinutes] = useState(state.sessionLength);
   const [play, setPlay] = useState(state.isPlaying);
 
   useEffect(() => {
     setTimeout(() => {
+      //
       if (count > 0) {
         setCount((count) => count - 1);
       }
+      if (count < 1) {
+        setMinutes((minutes) => minutes - 1);
+      }
     }, 1000);
-  }, [count]);
+  }, [count, minutes]);
 
   const audio = new Audio();
   audio.src = 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3';
