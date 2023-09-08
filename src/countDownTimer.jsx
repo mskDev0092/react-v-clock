@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 
 import './style.css';
 
@@ -6,6 +6,7 @@ const initialState = {
   sessionLength: 25,
   breakLength: 5,
   countSeconds: 60,
+  isPlaying: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -49,23 +50,39 @@ const reducer = (state = initialState, action) => {
       }
 
     case 'Start-Count':
-      console.log('hi');
+      return {
+        ...state,
+        isPlaying: true,
+      };
+
     case 'Pause-Count':
-    // Pause the countdown.
+      return {
+        ...state,
+        isPlaying: false,
+      };
     case 'Add-delay':
     // Add break to the countdown.
 
     case 'Reset':
-      // Stop the countdown and reset the timer.
       return initialState;
 
     default:
-      throw new Error();
+      return state;
   }
 };
 
-export default function App() {
+export default function CountDownTimer() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [count, setCount] = useState(state.countSeconds);
+  const [play, setPlay] = useState(state.isPlaying);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (count > 0) {
+        setCount((count) => count - 1);
+      }
+    }, 1000);
+  }, [count]);
 
   const audio = new Audio();
   audio.src = 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3';
@@ -100,7 +117,7 @@ export default function App() {
           <h1>Time Left</h1>
         </div>
         <div className="timeCount">
-          <p>{state.sessionLength} </p> <p>{state.countSeconds}</p>
+          <p>{state.sessionLength} </p> <p>{count}</p>
         </div>
       </div>
       <div className="btn">
