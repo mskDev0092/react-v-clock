@@ -6,7 +6,6 @@ const initialState = {
   sessionLength: 2,
   breakLength: 5,
   countSeconds: 6,
-  isPlaying: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -49,17 +48,6 @@ const reducer = (state = initialState, action) => {
         return state;
       }
 
-    case 'Start-Count':
-      return {
-        ...state,
-        isPlaying: true,
-      };
-
-    case 'Pause-Count':
-      return {
-        ...state,
-        isPlaying: false,
-      };
     case 'Add-delay':
     // Add break to the countdown.
 
@@ -75,16 +63,21 @@ export default function CountDownTimer() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [count, setCount] = useState(state.countSeconds);
   const [minutes, setMinutes] = useState(state.sessionLength);
-  const [play, setPlay] = useState(state.isPlaying);
+  const [play, setPlay] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       //
-      if (count > 0) {
+      if (count > 0 && count < 61) {
         setCount((count) => count - 1);
       }
-      if (count < 1) {
+      if (count === 0) {
         setMinutes((minutes) => minutes - 1);
+        setCount(state.countSeconds);
+      }
+      if (minutes === 0) {
+        setCount('00');
+        setMinutes('00');
       }
     }, 1000);
   }, [count, minutes]);
@@ -108,10 +101,10 @@ export default function CountDownTimer() {
     dispatch({ type: 'Reset' });
   };
   const handleStart = () => {
-    dispatch({ type: 'Start-Count' });
+    setPlay(true);
   };
   const handlePause = () => {
-    dispatch({ type: 'Pause-Count' });
+    setPlay(false);
   };
 
   return (
@@ -122,7 +115,7 @@ export default function CountDownTimer() {
           <h1>Time Left</h1>
         </div>
         <div className="timeCount">
-          <p>{state.sessionLength} </p> <p>{count}</p>
+          <p>{minutes} </p> <p>{count}</p>
         </div>
       </div>
       <div className="btn">
