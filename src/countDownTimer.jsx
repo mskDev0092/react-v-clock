@@ -68,14 +68,14 @@ export default function CountDownTimer() {
   useEffect(() => {
     setTimeout(() => {
       //
-      if (count > 0 && count < 61) {
+      if (count > 0) {
         setCount((count) => count - 1);
       }
       if (count === 0) {
         setMinutes((minutes) => minutes - 1);
         setCount(state.countSeconds);
       }
-      if (minutes === 0) {
+      if (minutes === 0 && count === 0) {
         setCount('00');
         setMinutes('00');
       }
