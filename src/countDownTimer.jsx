@@ -56,19 +56,15 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-const audio = new Audio();
-audio.src =
-  'https://cdn.jsdelivr.net/gh/mskDev0092/react-v-clock@main/clock-alarm-8761.mp3';
-
 export default function CountDownTimer() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [count, setCount] = useState(state.countSeconds);
   const [minutes, setMinutes] = useState(state.sessionLength);
-  const [delay, setDelay] = useState(state.breakLength);
-  const [play, setPlay] = useState(true);
+  const [delay, setDelay] = useState(true);
+  const [play, setPlay] = useState(false);
 
   useEffect(() => {
-    if (play === false) {
+    if (play === true) {
       setTimeout(() => {
         // Start count
         if (count > 0) {
@@ -80,45 +76,62 @@ export default function CountDownTimer() {
           setCount(state.countSeconds);
         }
 
-        if (minutes === 0 && count === 0) {
+        if (minutes === 0 && count === 0 && delay === true) {
+          audio.play();
           // Set the minutes and count to 0.
           setCount(0);
           setMinutes(0);
-          // Play the audio.
 
-          setTimeout(function () {
+          setTimeout(() => {
             // After 5 seconds, run the following function.
             setCount(state.countSeconds);
             setMinutes(state.breakLength);
+            setDelay(false);
           }, 5000);
-          audio.play();
+        }
+        if (minutes === 0 && count === 0 && delay === false) {
+          setCount(state.countSeconds);
+          setMinutes(state.sessionLength);
+          setDelay(true);
         }
       }, 1000);
     }
-  }, [count, minutes]);
+  }, [count, minutes, play]);
 
   const handleSessionAdd = () => {
-    dispatch({ type: 'Session++' });
+    if (play === false) {
+      dispatch({ type: 'Session++' });
+    }
   };
   const handleSessionSub = () => {
-    dispatch({ type: 'Session--' });
+    if (play === false) {
+      dispatch({ type: 'Session--' });
+    }
   };
   const handlebreakAdd = () => {
-    dispatch({ type: 'Break++' });
+    if (play === false) {
+      dispatch({ type: 'Break++' });
+    }
   };
   const handlebreakSub = () => {
-    dispatch({ type: 'Break--' });
+    if (play === false) {
+      dispatch({ type: 'Break--' });
+    }
   };
   const handleReset = () => {
     dispatch({ type: 'Reset' });
   };
   const handleStart = () => {
-    setPlay('yes');
-    console.log('yes');
+    setPlay(true);
+    console.log(play);
   };
   const handlePause = () => {
-    setPlay(0);
+    setPlay(false);
+    console.log(play);
   };
+  const audio = new Audio();
+  audio.src =
+    'https://cdn.jsdelivr.net/gh/mskDev0092/react-v-clock@main/clock-alarm-8761.mp3';
 
   return (
     <div className="master">
