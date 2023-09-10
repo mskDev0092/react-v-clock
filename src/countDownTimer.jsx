@@ -4,7 +4,7 @@ import './style.css';
 
 const initialState = {
   sessionLength: 2,
-  breakLength: 5,
+  breakLength: 1,
   countSeconds: 6,
 };
 
@@ -48,9 +48,6 @@ const reducer = (state = initialState, action) => {
         return state;
       }
 
-    case 'Add-delay':
-    // Add break to the countdown.
-
     case 'Reset':
       return initialState;
 
@@ -59,33 +56,46 @@ const reducer = (state = initialState, action) => {
   }
 };
 
+const audio = new Audio();
+audio.src =
+  'https://cdn.jsdelivr.net/gh/mskDev0092/react-v-clock@main/clock-alarm-8761.mp3';
+
 export default function CountDownTimer() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [count, setCount] = useState(state.countSeconds);
   const [minutes, setMinutes] = useState(state.sessionLength);
-  const [play, setPlay] = useState(false);
+  const [delay, setDelay] = useState(state.breakLength);
+  const [play, setPlay] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      //
-      if (count > 0) {
-        setCount((count) => count - 1);
-      }
-      if (count === 0) {
-        setMinutes((minutes) => minutes - 1);
-        setCount(state.countSeconds);
-      }
-      if (minutes === 0 && count === 0) {
-        setCount('00');
-        setMinutes('00');
-        audio.play();
-      }
-    }, 1000);
-  }, [count, minutes]);
+    if (play === false) {
+      setTimeout(() => {
+        // Start count
+        if (count > 0) {
+          setCount((count) => count - 1);
+        }
+        // Reset count and decrement 1 minute
+        if (count === 0) {
+          setMinutes((minutes) => minutes - 1);
+          setCount(state.countSeconds);
+        }
 
-  const audio = new Audio();
-  audio.src =
-    'https://cdn.jsdelivr.net/gh/mskDev0092/react-v-clock@main/clock-alarm-8761.mp3';
+        if (minutes === 0 && count === 0) {
+          // Set the minutes and count to 0.
+          setCount(0);
+          setMinutes(0);
+          // Play the audio.
+
+          setTimeout(function () {
+            // After 5 seconds, run the following function.
+            setCount(state.countSeconds);
+            setMinutes(state.breakLength);
+          }, 5000);
+          audio.play();
+        }
+      }, 1000);
+    }
+  }, [count, minutes]);
 
   const handleSessionAdd = () => {
     dispatch({ type: 'Session++' });
@@ -103,10 +113,11 @@ export default function CountDownTimer() {
     dispatch({ type: 'Reset' });
   };
   const handleStart = () => {
-    setPlay(true);
+    setPlay('yes');
+    console.log('yes');
   };
   const handlePause = () => {
-    setPlay(false);
+    setPlay(0);
   };
 
   return (
@@ -117,7 +128,8 @@ export default function CountDownTimer() {
           <h1>Time Left</h1>
         </div>
         <div className="timeCount">
-          <p>{minutes} </p> <p>{count}</p>
+          <p>{minutes < 10 ? '0' + minutes : minutes} </p>
+          <p>{count < 10 ? '0' + count : count}</p>
         </div>
       </div>
       <div className="btn">
