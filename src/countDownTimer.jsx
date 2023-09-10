@@ -49,7 +49,7 @@ const reducer = (state = initialState, action) => {
       }
 
     case 'Reset':
-      return initialState;
+      return initialState; 
 
     default:
       return state;
@@ -101,6 +101,7 @@ export default function CountDownTimer() {
   const handleSessionAdd = () => {
     if (play === false) {
       dispatch({ type: 'Session++' });
+      setMinutes((e) => e - 1);
     }
   };
   const handleSessionSub = () => {
