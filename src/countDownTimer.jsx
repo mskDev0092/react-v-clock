@@ -49,7 +49,7 @@ const reducer = (state = initialState, action) => {
       }
 
     case 'Reset':
-      return initialState; 
+      return initialState;
 
     default:
       return state;
@@ -57,12 +57,12 @@ const reducer = (state = initialState, action) => {
 };
 
 export default function CountDownTimer() {
+  const [play, setPlay] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [count, setCount] = useState(state.countSeconds);
+  const [count, setCount] = useState(0);
   const [minutes, setMinutes] = useState(state.sessionLength);
   const [delay, setDelay] = useState(true);
-  const [play, setPlay] = useState(false);
-
+  const [displayer, setDisplayer] = useState('Session');
   useEffect(() => {
     if (play === true) {
       setTimeout(() => {
@@ -86,12 +86,14 @@ export default function CountDownTimer() {
             // After 5 seconds, run the following function.
             setCount(state.countSeconds);
             setMinutes(state.breakLength);
+            setDisplayer('Break Time');
             setDelay(false);
           }, 5000);
         }
         if (minutes === 0 && count === 0 && delay === false) {
           setCount(state.countSeconds);
           setMinutes(state.sessionLength);
+          setDisplayer('Session');
           setDelay(true);
         }
       }, 1000);
@@ -99,14 +101,15 @@ export default function CountDownTimer() {
   }, [count, minutes, play]);
 
   const handleSessionAdd = () => {
-    if (play === false) {
+    if (play === false && minutes < 61 && minutes > 0) {
       dispatch({ type: 'Session++' });
-      setMinutes((e) => e - 1);
+      setMinutes((minutes) => minutes + 1);
     }
   };
   const handleSessionSub = () => {
-    if (play === false) {
+    if (play === false && minutes < 61 && minutes > 1) {
       dispatch({ type: 'Session--' });
+      setMinutes((minutes) => minutes - 1);
     }
   };
   const handlebreakAdd = () => {
@@ -124,6 +127,7 @@ export default function CountDownTimer() {
   };
   const handleStart = () => {
     setPlay(true);
+
     console.log(play);
   };
   const handlePause = () => {
@@ -139,7 +143,7 @@ export default function CountDownTimer() {
       <h1>25 + 5 Clock</h1>
       <div id="time-left">
         <div id="timer-label">
-          <h1>Time Left</h1>
+          <h1>{displayer}</h1>
         </div>
         <div className="timeCount">
           <p>{minutes < 10 ? '0' + minutes : minutes} </p>
