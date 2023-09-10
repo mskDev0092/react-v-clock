@@ -3,9 +3,9 @@ import React, { useReducer, useEffect, useState } from 'react';
 import './style.css';
 
 const initialState = {
-  sessionLength: 2,
-  breakLength: 1,
-  countSeconds: 6,
+  sessionLength: 25,
+  breakLength: 5,
+  countSeconds: 60,
 };
 
 const reducer = (state = initialState, action) => {
@@ -101,7 +101,7 @@ export default function CountDownTimer() {
   }, [count, minutes, play]);
 
   const handleSessionAdd = () => {
-    if (play === false && minutes < 61 && minutes > 0) {
+    if (play === false && minutes < 60 && minutes > 0) {
       dispatch({ type: 'Session++' });
       setMinutes((minutes) => minutes + 1);
     }
@@ -123,16 +123,15 @@ export default function CountDownTimer() {
     }
   };
   const handleReset = () => {
+    setMinutes(25);
+    setCount(0);
     dispatch({ type: 'Reset' });
   };
   const handleStart = () => {
     setPlay(true);
-
-    console.log(play);
   };
   const handlePause = () => {
     setPlay(false);
-    console.log(play);
   };
   const audio = new Audio();
   audio.src =
