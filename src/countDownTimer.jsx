@@ -78,12 +78,14 @@ export default function CountDownTimer() {
       if (minutes === 0 && count === 0) {
         setCount('00');
         setMinutes('00');
+        audio.play();
       }
     }, 1000);
   }, [count, minutes]);
 
   const audio = new Audio();
-  audio.src = 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3';
+  audio.src =
+    'https://cdn.jsdelivr.net/gh/mskDev0092/react-v-clock@main/clock-alarm-8761.mp3';
 
   const handleSessionAdd = () => {
     dispatch({ type: 'Session++' });
